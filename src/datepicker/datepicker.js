@@ -164,10 +164,14 @@ angular.module('ui.bootstrap.datepicker', ['ui.bootstrap.dateparser', 'ui.bootst
     ngModelOptions = extractOptions(ngModelCtrl);
 
     if ($scope.datepickerOptions.initDate) {
-      self.activeDate = dateParser.fromTimezone($scope.datepickerOptions.initDate, ngModelOptions.getOption('timezone')) || new Date();
+//          self.activeDate = dateParser.fromTimezone($scope.datepickerOptions.initDate, ngModelOptions.getOption('timezone')) || new Date();
+      var newInitDate = dateParser.fromTimezone($scope.datepickerOptions.initDate, ngModelOptions.getOption('timezone')) || new Date();
+      self.activeDate = angular.isDate(newInitDate) ? new Date(newInitDate.getTime()) : newInitDate;
       $scope.$watch('datepickerOptions.initDate', function(initDate) {
         if (initDate && (ngModelCtrl.$isEmpty(ngModelCtrl.$modelValue) || ngModelCtrl.$invalid)) {
-          self.activeDate = dateParser.fromTimezone(initDate, ngModelOptions.getOption('timezone'));
+//        self.activeDate = dateParser.fromTimezone(initDate, ngModelOptions.getOption('timezone'));
+          var updatedInitDate = dateParser.fromTimezone(initDate, ngModelOptions.getOption('timezone'));
+          self.activeDate = angular.isDate(updatedInitDate) ? new Date(updatedInitDate.getTime()) : updatedInitDate;
           self.refreshView();
         }
       });

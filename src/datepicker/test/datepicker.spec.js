@@ -1535,10 +1535,13 @@ describe('datepicker', function() {
     });
 
     describe('`init-date`', function() {
+      var expectedYear = 1980;
+      var expectedMonth = 10;
+      var expectedDay = 22;
       beforeEach(inject(function() {
         $rootScope.date = null;
         $rootScope.options = {
-          initDate: new Date('November 9, 1980')
+          initDate: new Date(expectedYear, expectedMonth, expectedDay)
         };
         element = $compile('<div uib-datepicker ng-model="date" datepicker-options="options"></div>')($rootScope);
         $rootScope.$digest();
@@ -1550,7 +1553,24 @@ describe('datepicker', function() {
 
       it('shows the correct title', function() {
         expect(getTitle()).toBe('November 1980');
-      });
+    });
+
+    it('does not change on click Next', function(){
+        clickNextButton();
+        var initDate = $rootScope.options.initDate;
+        var actual = initDate.getFullYear() + '-' + (initDate.getMonth()+1) + '-' + initDate.getDate();
+        var expected = expectedYear + '-' + (expectedMonth+1) + '-' + expectedDay;
+
+        expect(actual).toBe(expected);
+    });
+    it('does not change on click Previous', function(){
+        clickPreviousButton();
+        var initDate = $rootScope.options.initDate;
+        var actual = initDate.getFullYear() + '-' + (initDate.getMonth()+1) + '-' + initDate.getDate();
+        var expected = expectedYear + '-' + (expectedMonth+1) + '-' + expectedDay;
+
+        expect(actual).toBe(expected);
+       });
     });
 
     describe('`datepicker-mode`', function() {
